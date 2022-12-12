@@ -1,0 +1,84 @@
+
+
+
+        𝐏𝐫𝐨𝐦𝐞𝐭𝐡𝐞𝐮𝐬   :   prometheius  is  a metrics moinitoring and alerting tool   
+
+Graphite ,  infloxdb , wagios ,  sensu , opentsdb are similar tools  
+
+Prometheus will track every resources of os and minitor 
+
+It follows  real time  monitoring or container  monitoring  
+
+In monitoring it collects  data in Two ways   1.𝐋𝐨𝐠𝐬   2. 𝐦𝐞𝐭𝐫𝐢𝐜𝐬
+
+prometheus collects data from a program running in Os  and such program is called 𝐀𝐠𝐞𝐧𝐭 𝐏𝐫𝐨𝐠𝐫𝐚𝐦 
+
+The prometheus   use http / https    protocol  to pull   the data from  any resource of os sucha as Docker , k8s , cpu  and etc
+
+The Agent program is a Node exporter 
+
+prometheus  store  the data in a  Time Sequence  data Base   (TSDB)   in a row format  which is difficult  in retrieving  data 
+      for such reason it gives capability  of analyzing  the data  stored in database
+
+Promql  is the language used to analyze the database  
+
+whenever  we install  prometheus in OS  is said  prometheus server
+
+Launch Instance -  prometheus server  , all traffic   , connect to instance 
+      
+      from prometheus  document  choose the type of instance/os  
+
+copy url to download ,  wget <url>  
+  
+  tar -xvzf  <file>  
+  cd <file>
+  ./prometheus
+  
+  Ip:9090   -  to access to webpage
+  
+  
+  
+          Docker  TG1  
+          mysql TG2              --------------------------         Prometheus server  
+          node/linux TG3
+  
+  
+  
+  
+  
+  Connecting  Node / target  linux  to prometheus   
+  
+ 
+  Launch an instance  - > target  Linux 1
+  
+  In prometheus document    -> choose node  exporter
+  
+    wget <url>
+  
+    tar -xvzf  <file>
+    cd <file>
+    ./nodeexporter
+  
+    pubIp:9100
+  
+  click on metrics to get the data 
+  
+    netstat -tnlp      - status & port  of service 
+  
+  pgrep  prometheus  - gives PID
+  
+  vim prometheus.yml 
+  
+    copy the lines of job and targets  paste and update the ip's  and port's  of targets 
+  
+  kill -9  <PID>  
+  
+  ./prometheus
+  
+  check the webpage then we get monitoring data of target node in addition to server instance 
+  
+  
+  kill  -HUP  `pgrep prometheus`    -  for restarting instead killing and starting again 
+  
+  
+          

@@ -1,0 +1,126 @@
+
+
+Prometheus stores the data  mentioning the time at instant  in series format such that the data base  is said to be Time series data base
+
+pulling the data from OS /Agent is known as Scrapping
+
+
+                              report
+
+      Metrics                 graph
+                              Query
+
+                              Alert
+
+
+
+
+Linux 1           ----------------------     
+Linux 2           ----------------------        Prometheus server         ------------     TSDB            -----------    PromQL  ----->  analyze data
+Linux 3           ----------------------
+
+
+
+In prometheus server    
+        prometheus.yml
+
+                update Ip's  , port  of target  jobs / Nodes  
+                restart the service  (  &  is added to make server run in background and provide shell for further commands  )
+
+      start node service in  target linux
+
+launch an instance   --------->    targetlinux-2
+
+      download node-exporter     ,  unzip  and start  service
+
+
+In prometheus server instance
+
+      vim  prometheus.yml
+
+              job_name: "linuxnode2"
+              static_configs:
+                  - targets : ["IP:port"]
+                    labels :
+                          region: "US"
+                          team: "team1"
+                          env: "prod"
+
+
+
+
+restart program   after  updating file 
+
+Add labels to job  "linuxnode1"   ---->    IN  ,  web   ,  test
+
+
+
+pgrep prometheus     ------    for PID
+
+kill -HUP  `pgrep prometheus`         -------  to restart service
+
+Launch an instance   --------   dockerforprom    ---   all traffic
+
+docker has inbuilt program  taht export  metrics  
+
+          vim /etc/docker/daemon.json
+
+                    {"metrics-addr" : "0.0.0.0:9323" ,
+                              "experimental" : true }
+
+          systemctl restart docker
+
+
+To access webpage  <Ip:port>/metrics
+  
+  In the prometheus.yml   file  add the job of docker 
+  
+    with target as  ["IP:9323"]   ,  labels  as  IN , docker  , dev
+  
+  
+        pull  the images  and launch the containers   we can see all the info in the metrics  of docker target 
+  
+  we can write a query in query search box  to get metrics of reasources of  a particular target
+  
+          ex : engine-daemon-containers-states-containers      and   Execute
+  
+  the above query gives metrics of container
+  
+  
+  to filter search  we add  {  state : "running" }
+  
+  
+                                    -----------     string             ------    Text
+                                    -----------     integer            -----    Integer
+  data Structure in prometheus      -----------     Instant vector     -----    one particular period   
+                                    -----------     Range vector       ------   in range
+  
+  
+  
+  
+  
+  
+  
+  
+                    ----------    Equality Based  ( =)
+  Matches Type      ----------    Neg Equality    ( != )
+                    ----------    regex      ( ~  ) 
+                    ----------    Neg regex  ( !~ )
+  
+  
+  
+  process_cpu_seconds_total{job =~ "linuxnode.*"}
+  
+  
+                  -----------     Aggregation  ( by)
+  Operation   
+                  ------------   Binary  (  cmparison , arithmatic , and/or)
+  
+  sum   ,  rate  ,  irate  , changes  ,  predict_linear  ,  time  
+  
+  
+  
+  
+  
+  
+  
